@@ -77,11 +77,15 @@ h1{
     width: 44px;
 }
 
+.query-wrapper{
+    margin: 0 auto;
+    margin-left: 33%;
+}
+
 .query-list{
     display: none;
-    margin: 0 auto;
     height: 50px;
-    width: 250px;
+    width: 200px;
     background-color: yellow;
     text-align: center;
 }
