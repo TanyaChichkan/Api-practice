@@ -9,7 +9,7 @@ export class MarkUpRender{
                 <img src=${el.image_url} width="100" height="280"/>
                 <div class="text-wrapper">
                 <h2>${el.name}</h2>
-                <p>${el.abv}</p>
+                <p>Alcohol:${el.abv}%</p>
                 <p>${el.description}</p>
                 </div>
             </div>
@@ -31,7 +31,7 @@ export class MarkUpRender{
     static renderText(notifText){
         listWrapper.innerHTML="";
         const text = document.createElement('p');
-        text.classList.add('notification');
+        text.classList.add('text-not-found');
         text.textContent=`${notifText}. Please,try another search query`;
         listWrapper.append(text);
     }
