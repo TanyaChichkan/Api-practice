@@ -1,11 +1,13 @@
-import {controllers} from './controllers.js';
+import {controllers} from '../utils-classes/controllers.js';
 import { MarkUpRender } from '../utils-classes/markUpRender.js';
 import {Storage} from '../utils-classes/storage.js';
 import {queryWrapper,listWrapper} from '../utils-classes/constants.js';
 import {RegExpr} from '../utils-classes/regExp.js';
+import { OptionsForFetch } from '../utils-classes/optionsForFetch.js';
 
-export class SearchInput {
+export class SearchInput extends OptionsForFetch{
     constructor(){
+        super();
         this.setSelectors();
         this.setListeners();
     }
@@ -39,14 +41,17 @@ export class SearchInput {
         e.preventDefault();
 
         if(RegExpr.checkInputReg(this.input.value)){
-            
-            controllers.getData(this.input.value);
+            this.query = this.input.value;
+            controllers.getData(this.query,this.page);
             Storage.checkLocalStorage();
-            Storage.addNewItemToStorage(this.input.value);
-            this.input.value="";
+            Storage.addNewItemToStorage(this.query);
+            
+            return this.query;
         }else {
             MarkUpRender.inputValidationMessage();
         }
+
+        this.input.value="";
     }
 
     inputHandlerFocus(e) {

@@ -165,6 +165,12 @@ body{
     background-color: white;
 }
 
-.text-not-found{
+.text-not-found, .text-loader{
     text-align: center;
 }
+
+.button-load{
+    display: block;
+    margin: 0 auto;
+}
+
