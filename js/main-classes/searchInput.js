@@ -1,10 +1,10 @@
-import {Controllers} from './controllers.js';
+import {controllers} from './controllers.js';
 import { MarkUpRender } from '../utils-classes/markUpRender.js';
 import {Storage} from '../utils-classes/storage.js';
-import {queryWrapper} from '../utils-classes/constants.js';
+import {queryWrapper,listWrapper} from '../utils-classes/constants.js';
 import {RegExpr} from '../utils-classes/regExp.js';
 
-export class SearchInput{
+export class SearchInput {
     constructor(){
         this.setSelectors();
         this.setListeners();
@@ -13,13 +13,14 @@ export class SearchInput{
     setSelectors(){
         this.form = document.querySelector('.form');
         this.input = this.form.querySelector('input');
+        this.pageWrapper = document.querySelector('.page-wrapper');
+        document.addEventListener('click', (e) => this.documentHandler(e));
     }
 
     setListeners(){
         this.form.addEventListener('submit',(e)=>this.submitHandler(e));
-        this.input.addEventListener('focus',e=>this.inputHandlerFocus(e));
-        this.input.addEventListener('input',e=>this.inputValidation(e))
-        this.input.addEventListener('blur',e=>this.inputHandlerBlur(e));
+        this.input.addEventListener('input',e=>this.inputValidation(e));
+        this.input.addEventListener('mouseover', (e) => this.inputHandlerFocus(e));
     }
 
     inputValidation(e){
@@ -30,12 +31,12 @@ export class SearchInput{
 
         if(this.input.value === ""){
             MarkUpRender.removeValidMessage();
+            listWrapper.innerHTML="";
         }
     }
 
     submitHandler(e){
         e.preventDefault();
-        const controllers = new Controllers();
 
         if(RegExpr.checkInputReg(this.input.value)){
             
@@ -48,19 +49,20 @@ export class SearchInput{
         }
     }
 
-    inputHandlerFocus(e){
+    inputHandlerFocus(e) {
         Storage.checkLocalStorage();
         const savedItems = Storage.getFromLocalStorage();
-        
-        if(savedItems.length>0){
-           queryWrapper.classList.add('is-visible');
-           MarkUpRender.renderQueryList(savedItems);
+    
+        if (savedItems.length > 0) {
+          queryWrapper.classList.add('is-visible');
+          MarkUpRender.renderQueryList(savedItems);
         }
     }
 
-    inputHandlerBlur(e){
-        if(queryWrapper.classList.contains('is-visible')){
-            queryWrapper.classList.remove('is-visible');
+    documentHandler(e) {
+        if (e.target.nodeName !== 'li' && queryWrapper.classList.contains('is-visible')) {
+          queryWrapper.classList.remove('is-visible');
         }
     }
+
 }

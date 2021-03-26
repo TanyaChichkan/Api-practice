@@ -4,6 +4,5 @@ import {SearchInput} from './js/main-classes/searchInput.js';
 
 
 const input = new SearchInput();
-// const qList = new QueryList();
-
+const qList = new QueryList();
 
