@@ -60,5 +60,20 @@ export class MarkUpRender{
         validationMessage.classList.remove('is-visible');
     }
 
+    static showLoader(){
+        listWrapper.innerHTML="";
+        const loader = document.createElement('p');
+        loader.textContent="...loading";
+        loader.classList.add('text-loader')
+        listWrapper.append(loader);
+    }
+
+    static renderLoadMoreButton(){
+        const loadBtn = document.createElement('button');
+        loadBtn.textContent="Load more";
+        loadBtn.classList.add('button-load');
+        listWrapper.insertAdjacentElement('beforeend',loadBtn);
+        return loadBtn;
+    }
     
 }
