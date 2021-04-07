@@ -1,49 +1,60 @@
+import { listWrapper,loadMore} from './constants.js';
 import { MarkUpRender } from './markUpRender.js';
 import { OptionsForFetch } from './optionsForFetch.js';
+import {FetchURL} from './fetchURL.js';
 
 export class Controllers extends OptionsForFetch {
   constructor() {
     super();
   }
 
-  async getData(query = this.query, page = this.page) {
+  async getData(query = this.query,page=this.page) {
+    console.log(query,page);
+
     try {
       MarkUpRender.showLoader();
-      const data = await fetch(
-        `https://api.punkapi.com/v2/beers?page=${page}&per_page=4&beer_name=${query}`
-      )
+        const data = await FetchURL.fetchURL(query,page)
         .then((response) => response.json())
         .then((result) => {
           this.page += 1;
-          // this.input.value = ""
           return result;
         });
 
-      this.renderFetchResult(data);
+        
+        MarkUpRender.hideLoader();
+        MarkUpRender.renderLoadMoreButton();
+        this.renderFetchResult(data);
+
     } catch (e) {
-      MarkUpRender.renderError(e.message);
+      MarkUpRender.renderText(e.message);
+      MarkUpRender.hideLoadMoreButton();
+    }finally{
+      MarkUpRender.hideLoader();
     }
   }
 
   renderFetchResult(value) {
+    console.log(value);
     if (value.length === 0 && Array.isArray(value)) {
-      MarkUpRender.renderText('No items were found');
+      MarkUpRender.renderText('No items were found or no more items to show');
+      MarkUpRender.hideLoadMoreButton();
     }
 
     if (value.length > 0 && Array.isArray(value)) {
       const item = MarkUpRender.renderListItem(value);
-      const list = MarkUpRender.renderList();
-      const loadBtn = MarkUpRender.renderLoadMoreButton();
-      list.innerHTML += item;
+      this.list.innerHTML+=item;
+
       this.query = this.input.value;
-      
-      loadBtn.addEventListener('click', () => this.getData(this.query,this.page));
       
     }
 
     if (value.error) {
       MarkUpRender.renderText(value.error);
     }
+  }
+
+  pageReset(){
+    this.page=1;
   }
 
   
