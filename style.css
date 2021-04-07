@@ -165,12 +165,19 @@ body{
     background-color: white;
 }
 
-.text-not-found, .text-loader{
+.text-loader,.alert-text,.button-load{
+    display: none;
+}
+
+.text-loader.is-visible,
+.button-load.is-visible,
+.alert-text.is-visible{
+    display: block;
+    margin:0 auto;
     text-align: center;
 }
 
-.button-load{
-    display: block;
-    margin: 0 auto;
-}
+
+
+
 

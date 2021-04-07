@@ -1,9 +1,11 @@
-import {controllers} from '../utils-classes/controllers.js';
+import {controllers,Controllers} from '../utils-classes/controllers.js';
 import { MarkUpRender } from '../utils-classes/markUpRender.js';
 import {Storage} from '../utils-classes/storage.js';
-import {queryWrapper,listWrapper} from '../utils-classes/constants.js';
+import {queryWrapper} from '../utils-classes/constants.js';
 import {RegExpr} from '../utils-classes/regExp.js';
 import { OptionsForFetch } from '../utils-classes/optionsForFetch.js';
+import {loadMore} from '../utils-classes/constants.js';
+
 
 export class SearchInput extends OptionsForFetch{
     constructor(){
@@ -23,6 +25,11 @@ export class SearchInput extends OptionsForFetch{
         this.form.addEventListener('submit',(e)=>this.submitHandler(e));
         this.input.addEventListener('input',e=>this.inputValidation(e));
         this.input.addEventListener('mouseover', (e) => this.inputHandlerFocus(e));
+        loadMore.addEventListener('click', () => {
+            console.log(this.page);
+            console.log(controllers)
+            controllers.getData(this.input.value);
+        });
     }
 
     inputValidation(e){
@@ -33,16 +40,20 @@ export class SearchInput extends OptionsForFetch{
 
         if(this.input.value === ""){
             MarkUpRender.removeValidMessage();
-            listWrapper.innerHTML="";
+            // this.list.innerHTML="";
+            MarkUpRender.hideText("");
+            MarkUpRender.hideLoadMoreButton();
         }
     }
 
     submitHandler(e){
         e.preventDefault();
+        this.list.innerHTML="";
+        controllers.pageReset();
 
         if(RegExpr.checkInputReg(this.input.value)){
             this.query = this.input.value;
-            controllers.getData(this.query,this.page);
+            controllers.getData(this.query);
             Storage.checkLocalStorage();
             Storage.addNewItemToStorage(this.query);
             
@@ -51,7 +62,6 @@ export class SearchInput extends OptionsForFetch{
             MarkUpRender.inputValidationMessage();
         }
 
-        this.input.value="";
     }
 
     inputHandlerFocus(e) {
@@ -69,5 +79,7 @@ export class SearchInput extends OptionsForFetch{
           queryWrapper.classList.remove('is-visible');
         }
     }
+
+    
 
 }

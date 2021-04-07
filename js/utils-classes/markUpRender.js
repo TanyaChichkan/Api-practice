@@ -1,4 +1,4 @@
-import {listWrapper,queryList,validationMessage} from './constants.js';
+import {listWrapper,queryList,validationMessage,alertWrapper,loader,loadMore,text} from './constants.js';
 
 export class MarkUpRender{
 
@@ -19,30 +19,31 @@ export class MarkUpRender{
         return markUp.join(" ");
     }
 
-    static renderList(){
-        listWrapper.innerHTML="";
-        const list = document.createElement('ul');
-        list.classList.add('list');
-        listWrapper.append(list);
+    // static renderList(){
+    //         const list = document.createElement('ul');
+    //         list.classList.add('list');
+    //         listWrapper.append(list);
+        
 
-        return list
+    //     return list;
+    // }
+
+    static renderText(textMessage){
+        text.classList.add('is-visible');
+        text.textContent = `${textMessage}. Please,try again`;
+      
     }
 
-    static renderText(notifText){
-        listWrapper.innerHTML="";
-        const text = document.createElement('p');
-        text.classList.add('text-not-found');
-        text.textContent=`${notifText}. Please,try another search query`;
-        listWrapper.append(text);
+    static hideText(){
+        text.classList.remove('is-visible');
     }
 
-    static renderError(text){
-        listWrapper.innerHTML="";
-        const errorText = document.createElement('p');
-        errorText.classList.add('error-message');
-        errorText.textContent=`${text}. Please,try again`;
-        listWrapper.append(errorText);
-    } 
+    // static renderError(text){
+    //     const errorText = document.createElement('p');
+    //     errorText.classList.add('error-message');
+    //     errorText.textContent=`${text}. Please,try again`;
+    //     alertWrapper.append(errorText);
+    // } 
 
     static renderQueryList(arr){
        const queryListItem =  arr.map(item=>{
@@ -61,19 +62,20 @@ export class MarkUpRender{
     }
 
     static showLoader(){
-        listWrapper.innerHTML="";
-        const loader = document.createElement('p');
-        loader.textContent="...loading";
-        loader.classList.add('text-loader')
-        listWrapper.append(loader);
+       loader.classList.add('is-visible');
+    }
+
+    static hideLoader(){
+        loader.classList.remove('is-visible');
+
     }
 
     static renderLoadMoreButton(){
-        const loadBtn = document.createElement('button');
-        loadBtn.textContent="Load more";
-        loadBtn.classList.add('button-load');
-        listWrapper.insertAdjacentElement('beforeend',loadBtn);
-        return loadBtn;
+        loadMore.classList.add('is-visible');
+    }
+
+    static hideLoadMoreButton(){
+        loadMore.classList.remove('is-visible');
     }
     
 }
